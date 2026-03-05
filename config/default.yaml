@@ -1,0 +1,72 @@
+# 全局配置文件
+
+# 应用配置
+app:
+  name: "A 股量化金融平台"
+  version: "0.1.0"
+  debug: false
+
+# 数据配置
+data:
+  # 默认数据源
+  default_source: "akshare"
+  
+  # 数据缓存
+  cache:
+    enabled: true
+    directory: "data/cache"
+    expire_hours: 24
+  
+  # 股票池配置
+  stock_pool:
+    exclude_st: true          # 排除 ST 股票
+    exclude_new: true         # 排除新股（上市<60 日）
+    min_market_cap: 1000000000  # 最小市值 10 亿
+    min_liquidity: 10000000     # 最小日成交额 1000 万
+
+# 交易配置
+trading:
+  # A 股交易规则
+  t_plus_1: true              # T+1 交易
+  price_limit: true           # 涨跌停限制
+  
+  # 交易成本
+  cost:
+    commission: 0.00025       # 佣金：万 2.5
+    min_commission: 5.0       # 最低佣金：5 元
+    stamp_tax: 0.0005         # 印花税：0.05%
+    transfer_fee: 0.00001     # 过户费：十万分之一
+    slippage: 0.001           # 滑点：0.1%
+  
+  # 风控配置
+  risk_control:
+    max_position_ratio: 0.30   # 单只股票最大仓位 30%
+    max_total_position: 0.95   # 最大总仓位 95%
+    max_loss_ratio: 0.10       # 最大亏损比例 10%
+
+# 回测配置
+backtest:
+  initial_cash: 1000000       # 默认初始资金 100 万
+  benchmark: "000300.SH"      # 基准指数：沪深 300
+  
+  # 回测评估
+  evaluation:
+    risk_free_rate: 0.03      # 无风险利率 3%
+    trading_days_per_year: 252
+
+# 日志配置
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/app.log"
+  max_size: 10485760          # 10MB
+  backup_count: 5
+
+# 可视化配置
+plotting:
+  style: "seaborn-v0_8"
+  figsize: [12, 8]
+  dpi: 100
+  font:
+    sans-serif: ["SimHei", "Arial Unicode MS", "DejaVu Sans"]
+  save_format: "png"

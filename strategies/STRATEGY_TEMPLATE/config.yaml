@@ -1,0 +1,79 @@
+# 策略配置文件
+
+strategy:
+  # 策略名称
+  name: "策略名称"
+  
+  # 策略类型
+  type: "trend_following"  # trend_following/mean_reversion/multi_factor/momentum/arbitrage/event_driven/capital_flow
+  
+  # 核心参数（根据策略类型调整）
+  params:
+    param1: value1
+    param2: value2
+
+# 交易参数
+trading:
+  # 单次交易仓位（占总资金比例）
+  position_size: 0.1
+  
+  # 最大仓位（占总资金比例）
+  max_position: 0.3
+  
+  # 止损比例（0.05 = 5%）
+  stop_loss: 0.05
+  
+  # 止盈比例（0.15 = 15%）
+  take_profit: 0.15
+  
+  # 最大持仓数量
+  max_holdings: 10
+  
+  # 调仓周期（交易日）
+  rebalance_period: 5
+
+# 回测参数
+backtest:
+  # 初始资金
+  initial_cash: 1000000
+  
+  # 佣金费率（万分之 2.5）
+  commission: 0.00025
+  
+  # 印花税（0.05%，卖出收取）
+  stamp_tax: 0.0005
+  
+  # 滑点（0.1%）
+  slippage: 0.001
+  
+  # 过户费（十万分之一）
+  transfer_fee: 0.00001
+  
+  # 回测时间范围
+  start_date: "2020-01-01"
+  end_date: "2023-12-31"
+  
+  # 基准指数
+  benchmark: "000300.SH"  # 沪深 300
+
+# 数据参数
+data:
+  # 数据源
+  source: "akshare"  # akshare/tushare
+  
+  # 数据频率
+  frequency: "daily"  # daily/weekly/monthly
+  
+  # 使用前复权
+  adjust: "qfq"  # qfq/hfq/none
+  
+  # 缓存设置
+  cache:
+    enabled: true
+    expire_hours: 24
+
+# 日志配置
+logging:
+  level: "INFO"  # DEBUG/INFO/WARNING/ERROR
+  file: "logs/backtest.log"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
