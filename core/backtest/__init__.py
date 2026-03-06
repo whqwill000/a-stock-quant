@@ -5,11 +5,9 @@
 """
 
 from .engine import BacktestEngine
-from .portfolio import Portfolio
 from .metrics import MetricsCalculator
 
 __all__ = [
     "BacktestEngine",
-    "Portfolio",
     "MetricsCalculator",
 ]

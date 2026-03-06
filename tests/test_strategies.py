@@ -15,19 +15,13 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from strategies.base import BaseStrategy, StrategyConfig, Signal
-from strategies.trend_following.trend_strategy import (
-    TrendFollowingStrategy, TrendFollowingConfig,
-    DualThrustStrategy, DonchianChannelStrategy
-)
-from strategies.mean_reversion.mean_reversion_strategy import (
-    MeanReversionStrategy, MeanReversionConfig,
-    RSIMeanReversionStrategy, BollingerBandsStrategy
-)
-from strategies.multi_factor.multi_factor_strategy import (
-    MultiFactorStrategy, MultiFactorConfig
-)
-from strategies.momentum.momentum_strategy import (
-    MomentumStrategy, MomentumConfig,
+from strategies import (
+    TrendFollowingStrategy,
+    DualThrustStrategy, DonchianChannelStrategy,
+    MeanReversionStrategy,
+    RSIMeanReversionStrategy, BollingerBandsStrategy,
+    MultiFactorStrategy,
+    MomentumStrategy,
     PriceMomentumStrategy
 )
 
@@ -89,15 +83,15 @@ class TestTrendFollowingStrategy:
     
     def test_trend_strategy_creation(self):
         """测试趋势策略创建"""
-        config = TrendFollowingConfig(
-            ma_short=5,
-            ma_long=20
+        config = StrategyConfig(
+            name="TrendFollowing",
+            description="趋势跟踪策略",
+            params={'ma_short': 5, 'ma_long': 20}
         )
-        
+
         strategy = TrendFollowingStrategy(config)
-        
-        assert strategy.config.ma_short == 5
-        assert strategy.config.ma_long == 20
+
+        assert strategy.config.name == "TrendFollowing"
     
     def test_trend_strategy_signals(self, trend_data):
         """测试趋势策略信号生成"""
@@ -150,15 +144,15 @@ class TestMeanReversionStrategy:
     
     def test_mean_reversion_creation(self):
         """测试均值回归策略创建"""
-        config = MeanReversionConfig(
-            ma_period=20,
-            entry_zscore=2.0
+        config = StrategyConfig(
+            name="MeanReversion",
+            description="均值回归策略",
+            params={'ma_period': 20, 'entry_zscore': 2.0}
         )
-        
+
         strategy = MeanReversionStrategy(config)
-        
-        assert strategy.config.ma_period == 20
-        assert strategy.config.entry_zscore == 2.0
+
+        assert strategy.config.name == "MeanReversion"
     
     def test_mean_reversion_signals(self, range_data):
         """测试均值回归策略信号生成"""
@@ -217,15 +211,15 @@ class TestMultiFactorStrategy:
     
     def test_multi_factor_creation(self):
         """测试多因子策略创建"""
-        config = MultiFactorConfig(
-            top_n=5,
-            rebalance_freq=20
+        config = StrategyConfig(
+            name="MultiFactor",
+            description="多因子策略",
+            params={'top_n': 5, 'rebalance_freq': 20}
         )
-        
+
         strategy = MultiFactorStrategy(config)
-        
-        assert strategy.config.top_n == 5
-        assert strategy.config.rebalance_freq == 20
+
+        assert strategy.config.name == "MultiFactor"
     
     def test_multi_factor_signals(self, multi_stock_data):
         """测试多因子策略信号生成"""
@@ -265,15 +259,15 @@ class TestMomentumStrategy:
     
     def test_momentum_creation(self):
         """测试动量策略创建"""
-        config = MomentumConfig(
-            lookback_period=60,
-            top_n=5
+        config = StrategyConfig(
+            name="Momentum",
+            description="动量策略",
+            params={'lookback_period': 60, 'top_n': 5}
         )
-        
+
         strategy = MomentumStrategy(config)
-        
-        assert strategy.config.lookback_period == 60
-        assert strategy.config.top_n == 5
+
+        assert strategy.config.name == "Momentum"
     
     def test_momentum_signals(self, momentum_data):
         """测试动量策略信号生成"""

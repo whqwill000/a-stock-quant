@@ -7,12 +7,30 @@ A 股量化金融平台 - 核心模块
 __version__ = "0.1.0"
 __author__ = "A Stock Quant Team"
 
-from .data_fetch import DataFetcher
+# 导入核心类
+from .data_fetch import AKShareFetcher, TushareFetcher, DataCache
 from .backtest import BacktestEngine
-from .simulator import TradingSimulator
+from .simulator import Account, Order, OrderManager, MatchingEngine, RiskControl
+from .analysis import PerformanceAnalyzer, RiskAnalyzer
+from .utils import get_logger, ConfigManager
 
 __all__ = [
-    "DataFetcher",
+    # 数据获取
+    "AKShareFetcher",
+    "TushareFetcher",
+    "DataCache",
+    # 回测引擎
     "BacktestEngine",
-    "TradingSimulator",
+    # 交易模拟器
+    "Account",
+    "Order",
+    "OrderManager",
+    "MatchingEngine",
+    "RiskControl",
+    # 分析模块
+    "PerformanceAnalyzer",
+    "RiskAnalyzer",
+    # 工具模块
+    "get_logger",
+    "ConfigManager",
 ]

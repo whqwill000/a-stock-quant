@@ -377,34 +377,38 @@ class Account:
     ) -> Tuple[bool, str]:
         """
         买入股票
-        
+
         执行买入操作，更新资金和持仓
-        注意：调用前应确保资金已冻结
-        
+        自动冻结资金并处理T+1规则
+
         Args:
             stock_code: 股票代码
             volume: 买入数量
             price: 买入价格
             commission: 佣金
             transfer_fee: 过户费
-            
+
         Returns:
             (是否成功, 消息)
         """
         # 参数校验
         if volume <= 0:
             return False, "买入数量必须大于 0"
-        
+
         if price <= 0:
             return False, "买入价格必须大于 0"
-        
+
         # 计算总金额
         amount = volume * price
         total_cost = amount + commission + transfer_fee
-        
+
+        # 自动冻结资金
+        if not self.freeze_cash(total_cost):
+            return False, f"资金不足，无法买入。需要: {total_cost:,.2f}, 可用: {self.available_cash:,.2f}"
+
         # 获取或创建持仓
         position = self.get_position(stock_code)
-        
+
         # 更新持仓成本（加权平均）
         if position.total_volume > 0:
             total_cost_basis = position.avg_cost * position.total_volume + amount
@@ -412,15 +416,15 @@ class Account:
             position.avg_cost = total_cost_basis / new_total_volume
         else:
             position.avg_cost = price
-        
+
         # 更新持仓数量
         position.total_volume += volume
         # T+1: 当日买入的股份不可用
         # available_volume 不变，需要等到次日
-        
+
         # 扣除资金
         self.deduct_cash(total_cost)
-        
+
         # 记录 T+1
         self.t_plus1_records.append(TPlus1Record(
             stock_code=stock_code,
@@ -460,10 +464,10 @@ class Account:
     ) -> Tuple[bool, str]:
         """
         卖出股票
-        
+
         执行卖出操作，更新资金和持仓
-        注意：调用前应确保持仓已冻结
-        
+        自动冻结持仓并处理T+1规则
+
         Args:
             stock_code: 股票代码
             volume: 卖出数量
@@ -471,42 +475,47 @@ class Account:
             commission: 佣金
             stamp_tax: 印花税
             transfer_fee: 过户费
-            
+
         Returns:
             (是否成功, 消息)
         """
         # 参数校验
         if volume <= 0:
             return False, "卖出数量必须大于 0"
-        
+
         if price <= 0:
             return False, "卖出价格必须大于 0"
-        
+
         # 获取持仓
         position = self.get_position(stock_code)
-        
-        if position.frozen_volume < volume:
-            return False, f"冻结持仓不足: {position.frozen_volume} < {volume}"
-        
+
+        # 检查可用持仓
+        if position.available_volume < volume:
+            return False, f"可用持仓不足: {position.available_volume} < {volume}"
+
+        # 自动冻结持仓
+        if not self.freeze_position(stock_code, volume):
+            return False, f"冻结持仓失败"
+
         # 计算总金额
         amount = volume * price
         total_fee = commission + stamp_tax + transfer_fee
         net_amount = amount - total_fee
-        
+
         # 计算已实现盈亏
         realized_pnl = (price - position.avg_cost) * volume - total_fee
-        
+
         # 更新持仓
         position.frozen_volume -= volume
         position.total_volume -= volume
-        
+
         # 如果持仓清空，删除记录
         if position.total_volume == 0:
             del self.positions[stock_code]
-        
+
         # 增加资金
         self.add_cash(net_amount)
-        
+
         # 记录交易
         self.trade_history.append({
             'type': 'sell',
@@ -555,27 +564,32 @@ class Account:
     def update_t_plus1(self, new_date: date) -> None:
         """
         更新日期，处理 T+1 到期
-        
+
         将到期的买入记录转为可用持仓
-        
+
         Args:
             new_date: 新的日期
         """
         self.current_date = new_date
-        
+
         # 处理到期的 T+1 记录
         for record in self.t_plus1_records[:]:
             if record.available_date <= new_date:
                 # 增加可用持仓
                 position = self.get_position(record.stock_code)
                 position.available_volume += record.volume
-                
+
                 # 移除记录
                 self.t_plus1_records.remove(record)
-                
+
                 logger.debug(
                     f"T+1 到期: {record.stock_code} {record.volume}股 可用"
                 )
+
+        # 更新所有持仓的可用数量
+        for position in self.positions.values():
+            if position.available_volume < position.total_volume:
+                position.available_volume = position.total_volume
     
     def get_available_volume(self, stock_code: str) -> int:
         """

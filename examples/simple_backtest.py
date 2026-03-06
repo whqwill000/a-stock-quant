@@ -20,8 +20,7 @@ from datetime import datetime
 # 导入项目模块
 from core.backtest.engine import BacktestEngine, BacktestConfig
 from core.backtest.metrics import MetricsCalculator
-from strategies.trend_following.trend_strategy import TrendFollowingStrategy
-from strategies.mean_reversion.mean_reversion_strategy import MeanReversionStrategy
+from strategies import TrendFollowingStrategy, MeanReversionStrategy
 
 
 def generate_sample_data(start_date='2023-01-01', periods=252, n_stocks=5):

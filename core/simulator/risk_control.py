@@ -171,7 +171,7 @@ class RiskControl:
         # 9. 检查当日成交额
         if self.trade_date == date.today():
             if self.daily_turnover + order_value > self.config.max_daily_turnover:
-                return False = f"超过当日最大成交额: {self.daily_turnover + order_value:,.2f} > {self.config.max_daily_turnover:,.2f}"
+                return False, f"超过当日最大成交额: {self.daily_turnover + order_value:,.2f} > {self.config.max_daily_turnover:,.2f}"
         
         # 记录风控检查通过
         self._log_risk_event('check_buy', order.stock_code, 'passed', f"金额: {order_value:,.2f}")

@@ -30,94 +30,106 @@ a-stock-quant/
 │   ├── 05-快速开始.md             # 新手入门指南
 │   └── 06-常见问题.md             # FAQ
 │
-├── core/                         # 核心框架（所有策略共享）
-│   ├── data_fetch/               # 数据获取模块
+├── core/                         # 核心框架（所有策略共享）✅
+│   ├── data_fetch/               # 数据获取模块 ✅
 │   │   ├── akshare_fetcher.py    # AKShare 数据接口
 │   │   ├── tushare_fetcher.py    # Tushare 数据接口
 │   │   └── data_cache.py         # 数据缓存管理
 │   │
-│   ├── backtest/                 # 回测引擎
+│   ├── backtest/                 # 回测引擎 ✅
 │   │   ├── engine.py             # 回测主引擎
-│   │   ├── portfolio.py          # 投资组合管理
 │   │   └── metrics.py            # 绩效指标计算
 │   │
-│   ├── simulator/                # 交易模拟器
+│   ├── simulator/                # 交易模拟器 ✅
 │   │   ├── account.py            # 账户管理
 │   │   ├── order.py              # 订单系统
 │   │   ├── matching.py           # 撮合引擎
 │   │   └── risk_control.py       # 风控模块
 │   │
-│   ├── analysis/                 # 分析模块
+│   ├── analysis/                 # 分析模块 ✅
 │   │   ├── performance.py        # 绩效分析
-│   │   ├── attribution.py        # 收益归因
 │   │   └── risk.py               # 风险分析
 │   │
-│   └── utils/                    # 工具函数
-│       ├── logger.py             # 日志工具
-│       ├── config.py             # 配置管理
-│       └── helpers.py            # 辅助函数
+│   ├── utils/                    # 工具函数 ✅
+│   │   ├── logger.py             # 日志工具
+│   │   ├── config.py             # 配置管理
+│   │   └── helpers.py            # 辅助函数
+│   │
+│   ├── rl/                       # 强化学习模块 ✅
+│   │   └── multi_agent.py        # 多智能体强化学习
+│   │
+│   ├── ts_models/                # 时间序列模型 ✅
+│   │   ├── __init__.py
+│   │   ├── base.py               # 基础模型类
+│   │   ├── patchtst.py           # PatchTST模型
+│   │   ├── timesnet.py           # TimesNet模型
+│   │   ├── itransformer.py       # iTransformer模型
+│   │   └── factory.py            # 模型工厂
+│   │
+│   ├── llm/                      # 金融LLM模块 ✅
+│   │   ├── __init__.py
+│   │   └── finbert.py            # FinBERT情感分析
+│   │
+│   └── tabular/                  # 表格数据模型 ✅
+│       ├── __init__.py
+│       └── tabnet.py             # TabNet表格模型
 │
-├── strategies/                   # 策略目录（每个策略独立）
-│   ├── 01-trend-following/       # 策略 1: 趋势跟踪
+├── strategies/                   # 策略目录（每个策略独立）✅
+│   ├── base.py                   # 策略基类 ✅
+│   ├── 01-trend-following/       # 策略 1: 趋势跟踪 ✅
 │   │   ├── README.md             # 策略说明
-│   │   ├── strategy.py           # 策略实现
+│   │   ├── trend_strategy.py     # 策略实现
 │   │   ├── config.yaml           # 策略配置
-│   │   ├── backtest.py           # 回测脚本
-│   │   └── notebooks/            # 策略研究笔记
+│   │   └── backtest.py           # 回测脚本
 │   │
-│   ├── 02-mean-reversion/        # 策略 2: 均值回归
+│   ├── 02-mean-reversion/        # 策略 2: 均值回归 ✅
 │   │   ├── README.md
-│   │   ├── strategy.py
+│   │   ├── mean_reversion_strategy.py
 │   │   ├── config.yaml
-│   │   ├── backtest.py
-│   │   └── notebooks/
+│   │   └── backtest.py
 │   │
-│   ├── 03-multi-factor/          # 策略 3: 多因子选股
+│   ├── 03-multi-factor/          # 策略 3: 多因子选股 ✅
 │   │   ├── README.md
-│   │   ├── strategy.py
+│   │   ├── multi_factor_strategy.py
 │   │   ├── config.yaml
-│   │   ├── backtest.py
-│   │   └── notebooks/
+│   │   └── backtest.py
 │   │
-│   ├── 04-momentum/              # 策略 4: 动量策略
+│   ├── 04-momentum/              # 策略 4: 动量策略 ✅
 │   │   ├── README.md
-│   │   ├── strategy.py
+│   │   ├── momentum_strategy.py
 │   │   ├── config.yaml
-│   │   ├── backtest.py
-│   │   └── notebooks/
+│   │   └── backtest.py
 │   │
-│   ├── 05-arbitrage/             # 策略 5: 套利策略
+│   ├── 05-arbitrage/             # 策略 5: 套利策略 ✅
 │   │   ├── README.md
-│   │   ├── strategy.py
+│   │   ├── arbitrage_strategy.py
 │   │   ├── config.yaml
-│   │   ├── backtest.py
-│   │   └── notebooks/
+│   │   └── backtest.py
 │   │
-│   ├── 06-event-driven/          # 策略 6: 事件驱动
+│   ├── 06-event-driven/          # 策略 6: 事件驱动 ✅
 │   │   ├── README.md
-│   │   ├── strategy.py
+│   │   ├── event_driven_strategy.py
 │   │   ├── config.yaml
-│   │   ├── backtest.py
-│   │   └── notebooks/
+│   │   └── backtest.py
 │   │
-│   └── 07-capital-flow/          # 策略 7: 资金流策略
+│   └── 07-capital-flow/          # 策略 7: 资金流策略 ✅
 │       ├── README.md
-│       ├── strategy.py
+│       ├── capital_flow_strategy.py
 │       ├── config.yaml
-│       ├── backtest.py
-│       └── notebooks/
+│       └── backtest.py
 │
-├── scripts/                      # 脚本目录
-│   ├── setup.sh                  # 环境初始化脚本
-│   ├── download_data.py          # 数据下载脚本
-│   └── run_all_backtests.py      # 批量回测脚本
+├── scripts/                      # 脚本目录 ✅
+│   └── download_data.py          # 数据下载脚本 ✅
 │
-├── notebooks/                    # 公共 Jupyter 笔记
+├── examples/                     # 示例目录 ✅
+│   └── simple_backtest.py        # 回测示例 ✅
+│
+├── notebooks/                    # 公共 Jupyter 笔记 🔄
 │   ├── 01-数据获取示例.ipynb
 │   ├── 02-回测引擎使用.ipynb
 │   └── 03-绩效分析示例.ipynb
 │
-├── config/                       # 全局配置
+├── config/                       # 全局配置 ✅
 │   ├── default.yaml              # 默认配置
 │   └── logging.yaml              # 日志配置
 │
@@ -126,10 +138,11 @@ a-stock-quant/
 │   ├── processed/                # 处理后数据
 │   └── cache/                    # 缓存数据
 │
-├── tests/                        # 测试目录
-│   ├── test_data_fetch.py
-│   ├── test_backtest.py
-│   └── test_simulator.py
+├── tests/                        # 测试目录 ✅
+│   ├── test_utils.py             # 工具测试 ✅
+│   ├── test_simulator.py         # 模拟器测试 ✅
+│   ├── test_backtest.py          # 回测测试 ✅
+│   └── test_strategies.py        # 策略测试 ✅
 │
 └── requirements.txt              # Python 依赖
 ```
@@ -143,38 +156,54 @@ a-stock-quant/
 - Python 3.10+
 - pip 或 conda
 - 推荐：Anaconda/Miniconda
+- GPU（可选）：NVIDIA RTX 3060+ (6GB+ 显存)
 
-### 2. 安装步骤
+### 2. 部署步骤
 
 ```bash
-# 进入项目目录
-cd /home/whqwill/code/a-stock-quant
+# 1. 克隆项目
+cd /home/whqwill/code
+git clone https://github.com/your-username/a-stock-quant.git
+cd a-stock-quant
 
-# 创建虚拟环境（可选）
+# 2. 创建虚拟环境（推荐）
 python -m venv venv
 source venv/bin/activate  # Linux/Mac
 # 或
 venv\Scripts\activate     # Windows
 
-# 安装依赖
+# 3. 安装依赖
 pip install -r requirements.txt
 
-# 运行环境检查
-python scripts/setup.sh
+# 4. 验证安装
+python scripts/check_env.py
+
+# 5. 运行示例
+python examples/simple_backtest.py
 ```
 
 ### 3. 运行第一个策略
 
 ```bash
-# 进入趋势跟踪策略目录
-cd strategies/01-trend-following
-
-# 运行回测
-python backtest.py
+# 运行回测示例
+python examples/simple_backtest.py
 
 # 或在 Jupyter 中研究
 jupyter notebook notebooks/
 ```
+
+### 4. 配置说明
+
+- **全局配置**：`config/default.yaml`
+- **策略配置**：`config/strategies/`
+- **日志配置**：`config/logging.yaml`
+
+详细配置说明请参考：[配置说明文档](docs/13-配置说明.md)
+
+### 5. GPU 配置（可选）
+
+如果需要使用 GPU 加速训练，请参考：[GPU/CUDA 环境配置指南](docs/09-GPU环境配置指南.md)
+
 
 ---
 
@@ -202,6 +231,11 @@ jupyter notebook notebooks/
 | [开发规范](docs/04-开发规范.md) | 代码规范、开发流程 |
 | [快速开始](docs/05-快速开始.md) | 新手入门指南 |
 | [常见问题](docs/06-常见问题.md) | FAQ |
+| [部署与运行指南](docs/12-部署与运行指南.md) | 环境部署、运行流程、配置说明 ⭐ |
+| [模拟器操作指南](docs/10-模拟器操作指南.md) | 模拟器使用、策略选择、回测操作 ⭐ |
+| [策略操作手册](docs/11-策略操作手册.md) | 7 大类策略详细操作指南 ⭐ |
+| [配置说明](docs/13-配置说明.md) | 全局配置、策略配置、风控配置 ⭐ |
+| [GPU/CUDA 环境配置指南](docs/09-GPU环境配置指南.md) | GPU 加速、CUDA 配置、国产芯片适配 ⭐ |
 | [前沿技术与模型参考](docs/08-前沿技术与模型参考.md) | 量化领域最新技术、开源项目、预训练模型汇总 ⭐ |
 
 ---

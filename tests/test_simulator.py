@@ -75,15 +75,15 @@ class TestAccount:
     def test_sell_stock(self):
         """测试卖出股票"""
         account = Account(initial_cash=1000000)
-        
-        # 先买入
-        account.freeze_cash(10500)
-        account.buy("000001.SZ", 1000, 10.5, 5.0, 0.1)
-        
-        # 模拟次日
+
+        # 先买入（自动冻结资金）
+        success, msg = account.buy("000001.SZ", 1000, 10.5, 5.0, 0.1)
+        assert success == True, f"买入失败: {msg}"
+
+        # 模拟次日（T+1到期）
         next_day = account.current_date + timedelta(days=1)
         account.update_t_plus1(next_day)
-        
+
         # 冻结持仓并卖出
         account.freeze_position("000001.SZ", 500)
         success, msg = account.sell(
@@ -94,8 +94,8 @@ class TestAccount:
             stamp_tax=5.5,
             transfer_fee=0.05
         )
-        
-        assert success == True
+
+        assert success == True, f"卖出失败: {msg}"
         assert account.get_position("000001.SZ").total_volume == 500
     
     def test_t_plus1(self):

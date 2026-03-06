@@ -160,9 +160,12 @@ class TestHelpers:
         """测试标准化"""
         data = pd.Series([1, 2, 3, 4, 5])
         result = standardize(data, method="zscore")
-        
+
         # 标准化后均值应接近0
-        assert abs(result.mean()) < 1e-10
+        if isinstance(result, pd.Series):
+            assert abs(result.mean()) < 1e-10
+        else:
+            assert abs(np.mean(result)) < 1e-10
     
     def test_calculate_commission(self):
         """测试佣金计算"""
